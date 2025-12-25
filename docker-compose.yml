@@ -1,0 +1,16 @@
+version: "3.8"
+
+services:
+  country-service:
+    build: ./country-service
+
+  holiday-service:
+    build: ./holiday-service
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "5000:5000"
+    depends_on:
+      - country-service
+      - holiday-service
