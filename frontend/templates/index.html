@@ -1,44 +1,33 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Country & Holidays</title>
-  <link rel="stylesheet" href="/static/style.css">
+    <meta charset="UTF-8">
+    <title>Country & Holiday Explorer</title>
+    <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
 
-<h1>🌍 Country & Holiday Explorer</h1>
+<header>
+    🌍 Country & Holiday Explorer
+</header>
 
-<div id="countries"></div>
-<div id="holidays"></div>
+<div class="container">
+    <form method="post">
+        <input type="text" name="country" placeholder="Country code (TR, US, DE)" required>
+        <button type="submit">Explore</button>
+    </form>
 
-<script>
-fetch("/api/countries")
-  .then(r => r.json())
-  .then(data => {
-    document.getElementById("countries").innerHTML =
-      data.map(c =>
-        `<div class="card" onclick="loadHolidays('${c.code}')">
-          <img src="${c.flag}">
-          <h3>${c.name}</h3>
-          <p>Başkent: ${c.capital}</p>
-          <p>Nüfus: ${c.population.toLocaleString()}</p>
-        </div>`
-      ).join("")
-  })
-
-function loadHolidays(code) {
-  fetch(`/api/holidays?code=${code}`)
-    .then(r => r.json())
-    .then(data => {
-      document.getElementById("holidays").innerHTML =
-        "<h2>📅 Resmî Tatiller</h2>" +
-        data.map(h =>
-          `<p>${h.date} – ${h.name}</p>`
-        ).join("")
-    })
-}
-</script>
+    {% if country %}
+    <div class="card">
+        <h2>{{ country }}</h2>
+        <ul>
+            {% for h in holidays %}
+                <li>{{ h }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+</div>
 
 </body>
 </html>
