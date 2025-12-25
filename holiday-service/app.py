@@ -1,21 +1,16 @@
-from flask import Flask, request, jsonify
+from flask import Flask, jsonify
 import requests
-from datetime import datetime
 
 app = Flask(__name__)
 
-@app.route("/holidays")
-def holidays():
-    code = request.args.get("code")
-    year = datetime.now().year
-
-    data = requests.get(
-        f"https://date.nager.at/api/v3/PublicHolidays/{year}/{code}"
-    ).json()
-
+@app.route("/holidays/<code>")
+def holidays(code):
+    year = 2024
+    url = f"https://date.nager.at/api/v3/PublicHolidays/{year}/{code}"
+    data = requests.get(url).json()
     return jsonify([
         {"date": h["date"], "name": h["localName"]}
-        for h in data[:5]
+        for h in data[:10]
     ])
 
 app.run(host="0.0.0.0", port=5002)
