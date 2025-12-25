@@ -1,11 +1,13 @@
-version: "3.8"
-
 services:
   country-service:
     build: ./country-service
+    expose:
+      - "5001"
 
   holiday-service:
     build: ./holiday-service
+    expose:
+      - "5002"
 
   frontend:
     build: ./frontend
