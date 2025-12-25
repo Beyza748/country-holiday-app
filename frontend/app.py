@@ -3,8 +3,8 @@ import requests
 
 app = Flask(__name__)
 
-COUNTRY_SERVICE = "http://country-service:5001"
-HOLIDAY_SERVICE = "http://holiday-service:5002"
+COUNTRY = "http://country-service:5001"
+HOLIDAY = "http://holiday-service:5002"
 
 @app.route("/")
 def index():
@@ -12,20 +12,14 @@ def index():
 
 @app.route("/api/countries")
 def api_countries():
-    try:
-        r = requests.get(f"{COUNTRY_SERVICE}/countries", timeout=10)
-        return jsonify(r.json())
-    except:
-        return jsonify({"error": "Country service unreachable"}), 500
+    r = requests.get(f"{COUNTRY}/countries")
+    return jsonify(r.json())
 
 @app.route("/api/holidays")
 def api_holidays():
     code = request.args.get("code")
-    try:
-        r = requests.get(f"{HOLIDAY_SERVICE}/holidays/{code}", timeout=10)
-        return jsonify(r.json())
-    except:
-        return jsonify({"error": "Holiday service unreachable"}), 500
+    r = requests.get(f"{HOLIDAY}/holidays/{code}")
+    return jsonify(r.json())
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
