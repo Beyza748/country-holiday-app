@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>Country & Holiday Explorer</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<h1>🌍 Country & Holiday Explorer</h1>
+
+<div id="countries"></div>
+<div id="holidays"></div>
+
+<script>
+fetch("/api/countries")
+  .then(r => r.json())
+  .then(data => {
+    document.getElementById("countries").innerHTML =
+      data.map(c => `
+        <div class="card" onclick="loadHolidays('${c.code}')">
+          <img src="${c.flag}">
+          <h3>${c.name}</h3>
+          <p>${c.capital}</p>
+        </div>
+      `).join("");
+  });
+
+function loadHolidays(code) {
+  fetch("/api/holidays?code=" + code)
+    .then(r => r.json())
+    .then(data => {
+      document.getElementById("holidays").innerHTML =
+        "<h2>📅 Resmî Tatiller</h2>" +
+        data.map(h => `<p>${h.date} - ${h.name}</p>`).join("");
+    });
+}
+</script>
+
+</body>
+</html>
