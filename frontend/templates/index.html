@@ -6,12 +6,9 @@
   <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-
-<h1>🌍 Country & Holiday Explorer</h1>
-
+<h1>?? Country & Holiday Explorer</h1>
 <div id="countries"></div>
 <div id="holidays"></div>
-
 <script>
 fetch("/api/countries")
   .then(r => r.json())
@@ -21,24 +18,22 @@ fetch("/api/countries")
         `<div class="card" onclick="loadHolidays('${c.code}')">
           <img src="${c.flag}">
           <h3>${c.name}</h3>
-          <p>Başkent: ${c.capital}</p>
-          <p>Nüfus: ${c.population.toLocaleString()}</p>
+          <p>Baskent: ${c.capital}</p>
+          <p>Nufus: ${c.population.toLocaleString()}</p>
         </div>`
       ).join("")
   })
-
 function loadHolidays(code) {
   fetch(`/api/holidays?code=${code}`)
     .then(r => r.json())
     .then(data => {
       document.getElementById("holidays").innerHTML =
-        "<h2>📅 Resmî Tatiller</h2>" +
+        "<h2>Resmi Tatiller</h2>" +
         data.map(h =>
-          `<p>${h.date} – ${h.name}</p>`
+          `<p>${h.date} - ${h.name}</p>`
         ).join("")
     })
 }
 </script>
-
 </body>
 </html>
